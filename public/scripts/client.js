@@ -20,8 +20,10 @@ $(document).ready(function() {
         };
 
         console.log('objectToSend',objectToSend);
+
+
         // call saveKoala with the new obejct
-        // saveKoala(objectToSend);
+        saveKoala(objectToSend);
     }); //end addButton on click
 }); // end doc ready
 
@@ -32,6 +34,7 @@ function getKoalas() {
         url: '/koalas',
         type: 'GET',
         success: function(data) {
+                $('#viewKoalas').empty();
                 console.log('got some koalas: ', data);
                 for (var i = 0; i < data.length; i++) {
                     var koalaToDisplay = data[i];
@@ -58,7 +61,8 @@ function saveKoala(newKoala) {
         type: 'POST',
         data: newKoala,
         success: function(data) {
-                console.log('got some koalas: ', data);
+                console.log('ajax POST success, response: ', data);
+                getKoalas();
             } // end success
     }); //end ajax
 }
