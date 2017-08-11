@@ -12,14 +12,16 @@ $(document).ready(function() {
         // NOT WORKING YET :(
         // using a test object
         var objectToSend = {
-            name: 'testName',
-            age: 'testName',
-            gender: 'testName',
-            readyForTransfer: 'testName',
-            notes: 'testName',
+            name: $('#nameIn').val(),
+            age: $('#ageIn').val(),
+            gender: $('#genderIn').val(),
+            ready_for_transfer: $('#readyForTransferIn').val(),
+            notes: $('#notesIn').val(),
         };
+
+        console.log('objectToSend',objectToSend);
         // call saveKoala with the new obejct
-        saveKoala(objectToSend);
+        // saveKoala(objectToSend);
     }); //end addButton on click
 }); // end doc ready
 
