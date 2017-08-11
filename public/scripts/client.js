@@ -25,6 +25,10 @@ $(document).ready(function() {
         // call saveKoala with the new obejct
         saveKoala(objectToSend);
     }); //end addButton on click
+
+   $('#viewKoalas').on('click','.transferButton', function(){
+       console.log($(this).parent().parent().data('id'));
+   })
 }); // end doc ready
 
 function getKoalas() {
