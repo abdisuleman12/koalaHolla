@@ -1,12 +1,12 @@
 console.log('js');
 
-$(document).ready(function() {
+$(document).ready(function () {
     console.log('JQ');
     // load existing koalas on page load
     getKoalas();
 
     // add koala button click
-    $('#addButton').on('click', function() {
+    $('#addButton').on('click', function () {
         console.log('in addButton on click');
         // get user input and put in an object
         // NOT WORKING YET :(
@@ -19,16 +19,24 @@ $(document).ready(function() {
             notes: $('#notesIn').val(),
         };
 
-        console.log('objectToSend',objectToSend);
+        console.log('objectToSend', objectToSend);
 
 
         // call saveKoala with the new obejct
         saveKoala(objectToSend);
     }); //end addButton on click
 
-   $('#viewKoalas').on('click','.transferButton', function(){
-       console.log($(this).parent().parent().data('id'));
-   })
+    $('#viewKoalas').on('click', '.transferButton', function () {
+        var transferId = $(this).parent().parent().data('id');
+
+        $.ajax ({
+            method : 'PUT',
+            url : '/koalas/' + transferId, // this is going to be koalas/3 
+            success: function (response) {
+                getKoalas();
+            }
+        })
+    })
 }); // end doc ready
 
 function getKoalas() {
@@ -37,25 +45,25 @@ function getKoalas() {
     $.ajax({
         url: '/koalas',
         type: 'GET',
-        success: function(data) {
-                $('#viewKoalas').empty();
-                console.log('got some koalas: ', data);
-                for (var i = 0; i < data.length; i++) {
-                    var koalaToDisplay = data[i];
-                    var $koalaRowToDisplay = $('<tr class = "koalaRow"></tr>');
-                    $koalaRowToDisplay.data('id', koalaToDisplay.id);
-                    $koalaRowToDisplay.append('<td class = "koalaName">' + koalaToDisplay.name + '</td>');
-                    $koalaRowToDisplay.append('<td class = "koalaAge">' + koalaToDisplay.age + '</td>');
-                    $koalaRowToDisplay.append('<td class = "koalaGender">' + koalaToDisplay.gender + '</td>');
-                    $koalaRowToDisplay.append('<td class = "koalaReadyForTransfer">' + koalaToDisplay.ready_for_transfer + '</td>');
-                    $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
-                    if(koalaToDisplay.ready_for_transfer=='N'){
-                        $koalaRowToDisplay.append('<td><button class= "transferButton">mark for transfer</button></td>')
-                    }
-                    $('#viewKoalas').append($koalaRowToDisplay);
-
+        success: function (data) {
+            $('#viewKoalas').empty();
+            console.log('got some koalas: ', data);
+            for (var i = 0; i < data.length; i++) {
+                var koalaToDisplay = data[i];
+                var $koalaRowToDisplay = $('<tr class = "koalaRow"></tr>');
+                $koalaRowToDisplay.data('id', koalaToDisplay.id);
+                $koalaRowToDisplay.append('<td class = "koalaName">' + koalaToDisplay.name + '</td>');
+                $koalaRowToDisplay.append('<td class = "koalaAge">' + koalaToDisplay.age + '</td>');
+                $koalaRowToDisplay.append('<td class = "koalaGender">' + koalaToDisplay.gender + '</td>');
+                $koalaRowToDisplay.append('<td class = "koalaReadyForTransfer">' + koalaToDisplay.ready_for_transfer + '</td>');
+                $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
+                if (koalaToDisplay.ready_for_transfer == 'N') {
+                    $koalaRowToDisplay.append('<td><button class= "transferButton">mark for transfer</button></td>')
                 }
-            } // end success
+                $('#viewKoalas').append($koalaRowToDisplay);
+
+            }
+        } // end success
     }); //end ajax
     // display on DOM with buttons that allow edit of each
 } // end getKoalas
@@ -67,9 +75,9 @@ function saveKoala(newKoala) {
         url: '/koalas',
         type: 'POST',
         data: newKoala,
-        success: function(data) {
-                console.log('ajax POST success, response: ', data);
-                getKoalas();
-            } // end success
+        success: function (data) {
+            console.log('ajax POST success, response: ', data);
+            getKoalas();
+        } // end success
     }); //end ajax
 }
