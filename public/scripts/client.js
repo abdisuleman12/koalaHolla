@@ -45,6 +45,9 @@ function getKoalas() {
                     $koalaRowToDisplay.append('<td class = "koalaGender">' + koalaToDisplay.gender + '</td>');
                     $koalaRowToDisplay.append('<td class = "koalaReadyForTransfer">' + koalaToDisplay.ready_for_transfer + '</td>');
                     $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
+                    if(koalaToDisplay.ready_for_transfer=='N'){
+                        $koalaRowToDisplay.append('<td><button class= "transferButton">mark for transfer</button></td>')
+                    }
                     $('#viewKoalas').append($koalaRowToDisplay);
 
                 }
