@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
             console.log('Error connecting to DataBase', errorConnectingToDatabase);
             res.sendStatus(500)
         } else {
-            client.query('SELECT * FROM koala;', function (errorMakingQuery, result) {
+            client.query('SELECT * FROM koala ORDER BY name;', function (errorMakingQuery, result) {
                 done();
                 if (errorMakingQuery) {
                     console.log('Error making database query', errorMakingQuery);
@@ -66,6 +66,29 @@ router.put('/:id', function (req, res) {
         }
 
     })
-})
+});
+
+router.delete('/:id', function (req, res) {
+    var transferId = req.params.id;
+    pool.connect(function (errorConnectingToDatabse, client, done) {
+        if (errorConnectingToDatabse) {
+            console.log('error connecting to database', errorConnectingToDatabse);
+            res.sendStatus(500);
+        } else {
+            //query like this DELETE FROM koala WHERE id=10;
+            client.query('DELETE FROM koala WHERE id=$1;', [transferId], function (errorMakingQuery, result) {
+                done();
+                if (errorMakingQuery) {
+                    console.log('error making query', errorMakingQuery);
+                    res.sendStatus(500);
+                } else {
+                    res.sendStatus(200);
+                }
+            })
+        }
+
+    })
+});
+
 
 module.exports = router;

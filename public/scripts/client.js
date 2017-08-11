@@ -37,6 +37,17 @@ $(document).ready(function () {
             }
         })
     })
+    $('#viewKoalas').on('click', '.deleteButton', function () {
+        var deleteId = $(this).parent().parent().data('id');
+
+        $.ajax ({
+            method : 'DELETE',
+            url : '/koalas/' + deleteId, // this is going to be koalas/3 
+            success: function (response) {
+                getKoalas();
+            }
+        })
+    })
 }); // end doc ready
 
 function getKoalas() {
@@ -57,6 +68,7 @@ function getKoalas() {
                 $koalaRowToDisplay.append('<td class = "koalaGender">' + koalaToDisplay.gender + '</td>');
                 $koalaRowToDisplay.append('<td class = "koalaReadyForTransfer">' + koalaToDisplay.ready_for_transfer + '</td>');
                 $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
+                $koalaRowToDisplay.append('<td class = "koalaDelete"><button class="deleteButton">Delete</button></td>');
                 if (koalaToDisplay.ready_for_transfer == 'N') {
                     $koalaRowToDisplay.append('<td><button class= "transferButton">mark for transfer</button></td>')
                 }
